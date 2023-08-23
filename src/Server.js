@@ -1,5 +1,6 @@
 import express from "express";
 import RoutesApp from "./routers/index.routes.js";
+import { errorHandler } from "./handlers/error.handler.js";
 
 class Server {
   #app = express();
@@ -9,6 +10,7 @@ class Server {
   constructor() {
     this.#middlewares();
     this.#routes();
+    this.#handlers();
   }
 
   #middlewares() {
@@ -18,6 +20,10 @@ class Server {
 
   #routes() {
     this.#app.use("/", this.#routesApp.router);
+  }
+
+  #handlers() {
+    this.#app.use(errorHandler);
   }
 
   listen() {
