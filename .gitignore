@@ -2,3 +2,5 @@ node_modules
 ngrok.exe
 logs.*
 .env
+.replit
+replit.nix

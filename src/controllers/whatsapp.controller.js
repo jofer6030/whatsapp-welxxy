@@ -1,11 +1,13 @@
+import WhatsAppService from '../services/whatsapp.service.js'
+
 class WhatsAppController {
   #whatsAppService;
 
-  constructor(whatsAppService) {
-    this.#whatsAppService = whatsAppService;
+  constructor() {
+    this.#whatsAppService = new WhatsAppService()
   }
 
-  async verifyToken(req, res, next) {
+  verifyToken = async(req, res, next) => {
     try {
       await this.#whatsAppService.verifyToken(req, res);
     } catch (error) {
@@ -13,7 +15,7 @@ class WhatsAppController {
     }
   }
 
-  async recievedMessage(req, res, next) {
+  recievedMessage = async(req, res, next) => {
     try {
       await this.#whatsAppService.recievedMessage(req, res);
     } catch (error) {

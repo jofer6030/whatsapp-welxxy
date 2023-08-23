@@ -6,6 +6,7 @@ class WhatsAppService {
   constructor() {}
 
   async verifyToken(req, res) {
+    
     const accessToken = "WsV3rify";
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
