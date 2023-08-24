@@ -1,12 +1,12 @@
 import { sendWhatsappMsg } from "../utils/sendWhatsappMsg.util.js";
 
 import { sendText } from "../shared/msgWhatssapModels.shared.js";
+import { wellxxyCompra } from "../flows/wellxxy-compra.js";
 
 class WhatsAppService {
   constructor() {}
 
   async verifyToken(req, res) {
-    
     const accessToken = "WsV3rify";
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
@@ -29,7 +29,7 @@ class WhatsAppService {
       const text = this.#getTextUser(messages);
       const number = messages["from"];
 
-      await sendWhatsappMsg(sendText("Hola", number));
+      await wellxxyCompra(text, number);
     }
 
     res.send("RecievedMessage");
