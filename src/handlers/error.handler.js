@@ -1,5 +1,6 @@
 export const errorHandler = (err, req, res, next) => {
   if (err.isAxiosError) {
+    console.log(err.response)
     return res.status(400).json({
       errors: [{ msg: err.response.data.error.message }],
     });

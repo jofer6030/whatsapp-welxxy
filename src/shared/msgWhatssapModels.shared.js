@@ -1,4 +1,4 @@
-export function sendText(textResponse, number) {
+export function sendText( number,textResponse) {
   const data = {
     messaging_product: "whatsapp",
     recipient_type: "individual",
@@ -11,14 +11,15 @@ export function sendText(textResponse, number) {
   return data;
 }
 
-export function sendImage(number) {
+export function sendImage(number,link, caption) {
   const data = {
     messaging_product: "whatsapp",
     recipient_type: "individual",
     to: number,
     type: "image",
     image: {
-      link: "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/image_whatsapp.png",
+      link,
+      caption
     },
   };
   return data;
@@ -64,7 +65,7 @@ export function sendDocument(number) {
   return data;
 }
 
-export function sendButtons(number) {
+export function sendButtonText(number, {bodyText="📄",listBtns}) {
   const data = {
     messaging_product: "whatsapp",
     recipient_type: "individual",
@@ -73,29 +74,89 @@ export function sendButtons(number) {
     interactive: {
       type: "button",
       body: {
-        text: "¿Confirmas tu registro?",
+        text: bodyText,
       },
       action: {
-        buttons: [
-          {
+        buttons: listBtns.map(btn => {
+          return {
             type: "reply",
             reply: {
-              id: "001",
-              title: "Sí",
-            },
-          },
-          {
-            type: "reply",
-            reply: {
-              id: "002",
-              title: "No",
-            },
-          },
-        ],
+              id: `btn-${btn.id}`,
+              title: btn.text,
+            }
+          }
+        })
       },
     },
   };
   return data;
+}
+
+export function sendButtonDocument(number,{document,filename,bodyText="📄",listBtns}) {
+  const data = {
+    messaging_product: "whatsapp",
+    recipient_type: "individual",
+    to: number,
+    type: "interactive",
+    interactive: {
+      type: 'button',
+      header: {
+        type: 'document',
+        document: {
+          link: document,
+          filename: filename
+        }
+      },
+      body: {
+        text: bodyText
+      },
+      action: {
+        buttons: listBtns.map(btn => {
+          return {
+            type: "reply",
+            reply: {
+              id: `btn-${btn.id}`,
+              title: btn.text,
+            }
+          }
+        })
+      }
+    }
+  }
+  return data
+}
+
+export function sendButtonImage(number,{image,bodyText="📄",listBtns}) {
+   const data = {
+    messaging_product: "whatsapp",
+    recipient_type: "individual",
+    to: number,
+    type: "interactive",
+    interactive: {
+      type: 'button',
+      header: {
+        type: 'image',
+        image: {
+          link: image
+        }
+      },
+      body: {
+        text: bodyText
+      },
+      action: {
+        buttons: listBtns.map(btn => {
+          return {
+            type: "reply",
+            reply: {
+              id: `btn-${btn.id}`,
+              title: btn.text,
+            }
+          }
+        })
+      }
+    }
+  }
+  return data
 }
 
 export function sendList(number) {
