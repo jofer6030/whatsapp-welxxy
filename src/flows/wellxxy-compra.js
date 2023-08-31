@@ -15,8 +15,8 @@ const user = {
 const verifyUser = (user) => ({
   bodyText: `¿Tus datos son correctos?\n*N°Tel:* ${user.data.tel}\n*Dni:* ${user.data.dni}\n*Fecha de Nacimiento:* ${user.data.fechaNacimiento}`,
   listBtns: [
-    { id: "info-correct-si", text: "✅Si correctos" },
-    { id: "info-correct-no", text: "❌No actualizar" },
+    { id: "info-correct-si", text: "✅Si, correctos" },
+    { id: "info-correct-no", text: "❌No, actualizar" },
   ],
 });
 
@@ -51,22 +51,20 @@ export const wellxxyCompra = async (infoText, number, name) => {
     }
   }
   if (textLower === "terminos y condiciones" || infoText.id === "btn-terminos-si") {
-    await sendText(
+    await sendWhatsappMsg(sendText(
       number,
       "Para poder continuar, necesitamos algunos datos adicionales. Estos datos son necesarios para asegurarnos de brindarte el mejor servicio posible y cumplir con nuestras políticas de seguridad y privacidad. Una vez que hayas ingresado estos datos, estaremos listos para continuar. ¡Gracias!"
-    );
-    await sendText(
+    ));
+    await sendWhatsappMsg(sendText(
       number,
       "Por favor, proporciona tu número de DNI con el siguiente formato: *Dni:numeroDni*, ejemplo: Dni:12345678"
-    );
+    ));
     return;
   }
   if (textLower.includes("dni")) {
     // TODO: Crear usuario en la base de datos con el dni
-    return await sendText(
-      number,
-      "Ahora, proporciona tu fecha de nacimiento con el siguiente formato: *Fecha:dd-mm-aaaa* (dia-mes-año), ejemplo: Fecha:01-01-1990"
-    );
+    console.log("dni entro")
+    return await sendWhatsappMsg(sendText( number, "Ahora, proporciona tu fecha de nacimiento con el siguiente formato: *Fecha:dd-mm-aaaa* (dia-mes-año), ejemplo: Fecha:01-01-1990"));
   }
   if (textLower.includes("fecha")) {
     // TODO: Actualizar usuario en la base de datos con la fecha de nacimiento
@@ -86,13 +84,13 @@ export const wellxxyCompra = async (infoText, number, name) => {
       sendButtonText(number, {
         bodyText: `¿Desea comprar el producto?`,
         listBtns: [
-          { id: "comprar-si", text: "✅Si comprar!" },
-          { id: "comprar-no", text: "❌No gracias" },
+          { id: "comprar-si", text: "✅Si, comprar!" },
+          { id: "comprar-no", text: "❌No, gracias" },
         ],
       })
     );
   }
-  if (textLower === "si comprar!" || infoText.id === "btn-comprar-si") {
+  if (textLower === "si comprar" || infoText.id === "btn-comprar-si") {
     return await sendWhatsappMsg(
       sendText(
         number,

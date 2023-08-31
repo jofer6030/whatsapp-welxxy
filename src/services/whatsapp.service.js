@@ -25,6 +25,7 @@ class WhatsAppService {
     const messageObject = value["messages"];
     const contact = value["contacts"]
     if (typeof messageObject !== "undefined") {
+      console.log(messageObject)
       const messages = messageObject[0];
       const name = contact[0].profile.name
       const number = messages["from"];
