@@ -4,10 +4,10 @@ import { sanitizeText } from "../utils/sanitizeText.util.js";
 import { sendButtonText, sendButtonDocument, sendButtonImage, sendText } from "../shared/msgWhatssapModels.shared.js";
 
 const user = {
-  isNew: false,
+  isNew: true,
   data: {
-    tel: "51961324952",
-    dni: "74885854",
+    tel: "5112345678",
+    dni: "12345678",
     fechaNacimiento: "01-01-1990",
   },
 };
@@ -51,20 +51,29 @@ export const wellxxyCompra = async (infoText, number, name) => {
     }
   }
   if (textLower === "terminos y condiciones" || infoText.id === "btn-terminos-si") {
-    await sendWhatsappMsg(sendText(
-      number,
-      "Para poder continuar, necesitamos algunos datos adicionales. Estos datos son necesarios para asegurarnos de brindarte el mejor servicio posible y cumplir con nuestras políticas de seguridad y privacidad. Una vez que hayas ingresado estos datos, estaremos listos para continuar. ¡Gracias!"
-    ));
-    await sendWhatsappMsg(sendText(
-      number,
-      "Por favor, proporciona tu número de DNI con el siguiente formato: *Dni:numeroDni*, ejemplo: Dni:12345678"
-    ));
+    await sendWhatsappMsg(
+      sendText(
+        number,
+        "Para poder continuar, necesitamos algunos datos adicionales. Estos datos son necesarios para asegurarnos de brindarte el mejor servicio posible y cumplir con nuestras políticas de seguridad y privacidad. Una vez que hayas ingresado estos datos, estaremos listos para continuar. ¡Gracias!"
+      )
+    );
+    await sendWhatsappMsg(
+      sendText(
+        number,
+        "Por favor, proporciona tu número de DNI con el siguiente formato: *Dni:numeroDni*, ejemplo: Dni:12345678"
+      )
+    );
     return;
   }
   if (textLower.includes("dni")) {
     // TODO: Crear usuario en la base de datos con el dni
-    console.log("dni entro")
-    return await sendWhatsappMsg(sendText( number, "Ahora, proporciona tu fecha de nacimiento con el siguiente formato: *Fecha:dd-mm-aaaa* (dia-mes-año), ejemplo: Fecha:01-01-1990"));
+    console.log("dni entro");
+    return await sendWhatsappMsg(
+      sendText(
+        number,
+        "Ahora, proporciona tu fecha de nacimiento con el siguiente formato: *Fecha:dd-mm-aaaa* (dia-mes-año), ejemplo: Fecha:01-01-1990"
+      )
+    );
   }
   if (textLower.includes("fecha")) {
     // TODO: Actualizar usuario en la base de datos con la fecha de nacimiento
@@ -90,11 +99,25 @@ export const wellxxyCompra = async (infoText, number, name) => {
       })
     );
   }
+
+  if (textLower === "no gracias" || infoText.id === "btn-comprar-no") {
+    return await sendWhatsappMsg(sendText(number, "Gracias por tu tiempo, ¡esperamos verte pronto!"));
+  }
   if (textLower === "si comprar" || infoText.id === "btn-comprar-si") {
     return await sendWhatsappMsg(
       sendText(
         number,
         "¡Perfecto! Por favor, proporciona la dirección de entrega con el siguiente formato: *Dirección: tu dirección*, ejemplo: Dirección:Av. Javier Prado 1234, San Isidro"
+      )
+    );
+  }
+
+  if (textLower.includes("direccion")) {
+    // se envia en link de pago mercado pago
+    return await sendWhatsappMsg(
+      sendText(
+        number,
+        "Ahora te enviaremos un link de pago para que puedas realizar la compra. Una vez que hayas realizado el pago, te enviaremos un mensaje de confirmación con la fecha de entrega. ¡Gracias!"
       )
     );
   }
