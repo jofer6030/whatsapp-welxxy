@@ -1,16 +1,13 @@
 export function sanitizeText(text) {
-  // Expresión regular para buscar emojis y caracteres especiales quitar las tildes
-  const withoutAccents = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\w\s]/g;
+  // Expresión regular para buscar emojis
+  const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 
-  // Remover emojis y caracteres especiales
-  const cleanText = withoutAccents.replace(emojiRegex, "");
+  // Remover emojis
+  const cleanTextWithoutEmojis = text.replace(emojiRegex, "");
 
-  // Aplicar trim para eliminar espacios en blanco al inicio y al final
-  const trimmedText = cleanText.trim().toLowerCase();
+  // Quitar tildes
+  const cleanText = cleanTextWithoutEmojis.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   // Devolver el texto limpio
-  return trimmedText;
+  return cleanText;
 }
-
-console.log(sanitizeText("Dirección"));

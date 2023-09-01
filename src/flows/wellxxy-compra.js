@@ -2,6 +2,7 @@ import { sendWhatsappMsg } from "../utils/sendWhatsappMsg.util.js";
 import { sanitizeText } from "../utils/sanitizeText.util.js";
 
 import { sendButtonText, sendButtonDocument, sendButtonImage, sendText } from "../shared/msgWhatssapModels.shared.js";
+import { isDateValid } from "../utils/isDateValid.util.js";
 
 const user = {
   isNew: true,
@@ -46,11 +47,10 @@ export const wellxxyCompra = async (infoText, number, name) => {
           ],
         })
       );
-    } else {
-      return await sendWhatsappMsg(sendButtonText(number, verifyUser(user)));
     }
+    return await sendWhatsappMsg(sendButtonText(number, verifyUser(user)));
   }
-  if (textLower === "terminos y condiciones" || infoText.id === "btn-terminos-si") {
+  if (infoText.id === "btn-terminos-si") {
     await sendWhatsappMsg(
       sendText(
         number,
@@ -65,9 +65,16 @@ export const wellxxyCompra = async (infoText, number, name) => {
     );
     return;
   }
-  if (textLower.includes("dni")) {
+  if (infoText.id === "btn-terminos-no") {
+    return await sendWhatsappMsg(sendText(number, "Gracias por tu tiempo, ¡esperamos verte pronto!"));
+  }
+  if (!isNaN(Number(textLower))) {
+    if (textLower.length !== 8) {
+      return await sendWhatsappMsg(
+        sendText(number, "El número de DNI debe tener 8 dígitos, por favor, vuelve a intentarlo")
+      );
+    }
     // TODO: Crear usuario en la base de datos con el dni
-    console.log("dni entro");
     return await sendWhatsappMsg(
       sendText(
         number,
@@ -75,10 +82,14 @@ export const wellxxyCompra = async (infoText, number, name) => {
       )
     );
   }
-  if (textLower.includes("fecha")) {
-    // TODO: Actualizar usuario en la base de datos con la fecha de nacimiento
-
-    return await sendWhatsappMsg(sendButtonText(number, verifyUser(user)));
+  if (textLower.includes("-")) {
+    if (isDateValid(textLower)) {
+      // TODO: Actualizar usuario en la base de datos con la fecha de nacimiento
+      return await sendWhatsappMsg(sendButtonText(number, verifyUser(user)));
+    }
+    return await sendWhatsappMsg(
+      sendText(number, "El formato de la fecha de nacimiento es incorrecto, por favor, vuelve a intentarlo")
+    );
   }
   if (textLower === "no actualizar" || infoText.id === "btn-info-correct-no") {
     return await sendWhatsappMsg(
@@ -99,7 +110,6 @@ export const wellxxyCompra = async (infoText, number, name) => {
       })
     );
   }
-
   if (textLower === "no gracias" || infoText.id === "btn-comprar-no") {
     return await sendWhatsappMsg(sendText(number, "Gracias por tu tiempo, ¡esperamos verte pronto!"));
   }
@@ -111,8 +121,7 @@ export const wellxxyCompra = async (infoText, number, name) => {
       )
     );
   }
-
-  if (textLower.includes("direccion")) {
+  if (["av.", "jr.", "psje.", "calle.", "cra.", "pasaje."].some((word) => textLower.includes(word))) {
     // se envia en link de pago mercado pago
     return await sendWhatsappMsg(
       sendText(
