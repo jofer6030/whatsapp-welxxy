@@ -25,7 +25,6 @@ class WhatsAppService {
     const messageObject = value["messages"];
     const contact = value["contacts"]
     if (typeof messageObject !== "undefined") {
-      console.log(messageObject)
       const messages = messageObject[0];
       const name = contact[0].profile.name
       const number = messages["from"];
@@ -38,7 +37,7 @@ class WhatsAppService {
   }
 
   #getInfoTextUser(messages) {
-    const infoText = {text: ""};
+    const infoText = { text: "" };
     const typeMessage = messages["type"];
 
     if (typeMessage === "text") {

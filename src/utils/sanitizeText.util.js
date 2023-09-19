@@ -1,13 +1,10 @@
 export function sanitizeText(text) {
-  // Expresión regular para buscar emojis
-  const emojiRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
-
-  // Remover emojis
-  const cleanTextWithoutEmojis = text.replace(emojiRegex, "");
-
   // Quitar tildes
-  const cleanText = cleanTextWithoutEmojis.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const cleanTextWithoutAccents = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  // Convertir a minúsculas
+  const cleanTextLowerCase = cleanTextWithoutAccents.toLowerCase();
 
   // Devolver el texto limpio
-  return cleanText;
+  return cleanTextLowerCase;
 }
