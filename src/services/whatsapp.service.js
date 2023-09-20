@@ -4,7 +4,7 @@ import { sendText } from "../shared/msgWhatssapModels.shared.js";
 import { wellxxyCompra } from "../flows/wellxxy-compra.js";
 
 class WhatsAppService {
-  constructor() { }
+  constructor() {}
 
   async verifyToken(req, res) {
     const accessToken = "WsV3rify";
@@ -23,14 +23,16 @@ class WhatsAppService {
     const changes = entry["changes"][0];
     const value = changes["value"];
     const messageObject = value["messages"];
-    const contact = value["contacts"]
+    const contact = value["contacts"];
     if (typeof messageObject !== "undefined") {
       const messages = messageObject[0];
-      const name = contact[0].profile.name
-      const number = messages["from"];
+      const name = contact[0].profile.name;
+      const userPhoneNumber = messages["from"];
       const infoText = this.#getInfoTextUser(messages);
 
-      await wellxxyCompra(infoText, number, name);
+      const userState = req.session["userPhoneNumber"] || { userPhoneNumber, currentStep: 1 };
+      await wellxxyCompra(infoText, userPhoneNumber, name, userState);
+      req.session["userPhoneNumber"] = { currentStep: userState.currentStep + 1 };
     }
 
     res.send("RecievedMessage");
@@ -49,7 +51,7 @@ class WhatsAppService {
       const typeInteractive = interactiveObject["type"];
       if (["button_reply", "list_reply"].includes(typeInteractive)) {
         infoText.text = interactiveObject[typeInteractive].title;
-        infoText.id = interactiveObject[typeInteractive].id
+        infoText.id = interactiveObject[typeInteractive].id;
       }
     }
 
