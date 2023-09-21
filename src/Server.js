@@ -1,5 +1,4 @@
 import express from "express";
-import session from "express-session";
 
 import RoutesApp from "./routers/index.routes.js";
 import { errorHandler } from "./handlers/error.handler.js";
@@ -18,16 +17,6 @@ class Server {
   #middlewares() {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
-    this.#app.use(
-      session({
-        secret: "secret-key",
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-          maxAge: 3600000,
-        },
-      })
-    );
   }
 
   #routes() {
