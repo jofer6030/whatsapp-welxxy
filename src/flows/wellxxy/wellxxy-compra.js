@@ -13,7 +13,7 @@ import { isEmailValid } from "../../utils/isEmailValid.util.js";
 
 import * as flow from "../../utils/enumFlow.util.js";
 import * as message from "./messages.js";
-import { memoryConversation } from "../../utils/memoryConversation.js";
+import { getStateFlow,memoryConversation } from "../../utils/memoryConversation.js";
 
 const apiService = new ApiService();
 
@@ -57,8 +57,8 @@ export const wellxxyCompra = async (infoText, nroCell, name) => {
         const msg = await message.ToGetDni(nroCell);
         memoryConversation(nroCell, { state: flow.GET_DNI, messageCompany: msg });
       } else if (["❌no", "no"].includes(keyWord)) {
-        await message.FinishFlow(nroCell);
-        memoryConversation(nroCell, { state: flow.GET_DNI, messageCompany: msg });
+        const msg = await message.FinishFlow(nroCell);
+        memoryConversation(nroCell, { state: flow.START, messageCompany: msg });
       } else {
         const msg = await message.ValidateMessage(nroCell, "Si - No");
         memoryConversation(nroCell, { state: flow.TERMS_CONDITIONS, messageCompany: msg });
