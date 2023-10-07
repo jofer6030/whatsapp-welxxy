@@ -20,7 +20,10 @@ export const getStateFlow = (nroCell, message) => {
   const pathFile = path.join(directorio, `conversation_${nroCell}.txt`);
 
   if (!fs.existsSync(pathFile)) {
-    fs.writeFileSync(pathFile, JSON.stringify({ nroCell, conversations: [{ state: WELCOME_USER, message }] }));
+    fs.writeFileSync(
+      pathFile,
+      JSON.stringify({ nroCell, conversations: [{ state: WELCOME_USER, messageUser: message }] })
+    );
     return WELCOME_USER;
   }
   const parseInfoUser = JSON.parse(fs.readFileSync(pathFile, "utf-8"));

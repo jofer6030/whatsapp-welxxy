@@ -1,5 +1,10 @@
 import { sendWhatsappMsg } from "../../utils/sendWhatsappMsg.util.js";
-import { sendButtonDocument, sendButtonImage, sendButtonText, sendText } from "../../shared/msgWhatssapModels.shared.js";
+import {
+  sendButtonDocument,
+  sendButtonImage,
+  sendButtonText,
+  sendText,
+} from "../../shared/msgWhatssapModels.shared.js";
 
 export const Welcome = async (nroTel, name) => {
   await sendWhatsappMsg(
@@ -9,12 +14,14 @@ export const Welcome = async (nroTel, name) => {
       listBtns: [{ id: "iniciar", text: "Iniciar" }],
     })
   );
+  return `¡Hola ${name}! Somos Wellxxy, un emprendimiento de salud y bienestar para la mujer.\nPor favor haga click para comenzar`;
 };
 
 export const TermsConditions = async (nroTel) => {
   await sendWhatsappMsg(
     sendButtonDocument(nroTel, {
-      document: "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/document_whatsapp.pdf",
+      document:
+        "https://biostoragecloud.blob.core.windows.net/resource-udemy-whatsapp-node/document_whatsapp.pdf",
       filename: "Términos y condiciones",
       bodyText: "¿Aceptas nuestros términos y condiciones?",
       listBtns: [
@@ -23,14 +30,17 @@ export const TermsConditions = async (nroTel) => {
       ],
     })
   );
+  return "¿Aceptas nuestros términos y condiciones?";
 };
 
 export const VerifyInfoUser = async (nroTel, user) => {
   await sendWhatsappMsg(
     sendButtonText(nroTel, {
-      bodyText: `*¿Tus datos son correctos?*\n\n*N°Tel:* ${user.nro_celular || "por definir"}\n*Dni:* ${
-        user.dni || "por definir"
-      }\n*Fecha de Nacimiento:* ${user.fecha_nacimiento || "por definir"}\n*Correo:* ${
+      bodyText: `*¿Tus datos son correctos?*\n\n*N°Tel:* ${
+        user.nro_celular || "por definir"
+      }\n*Dni:* ${user.dni || "por definir"}\n*Fecha de Nacimiento:* ${
+        user.fecha_nacimiento || "por definir"
+      }\n*Correo:* ${
         user.correo || "por definir"
       }\n\nSi tienes algun dato *por definir*, por favor, actualizalo presionando el boton *No, actualizar*, de lo contrario no se podra continuar con la compra`,
       listBtns: [
@@ -39,6 +49,11 @@ export const VerifyInfoUser = async (nroTel, user) => {
       ],
     })
   );
+  return `*¿Tus datos son correctos?*\n\n*N°Tel:* ${user.nro_celular || "por definir"}\n*Dni:* ${
+    user.dni || "por definir"
+  }\n*Fecha de Nacimiento:* ${user.fecha_nacimiento || "por definir"}\n*Correo:* ${
+    user.correo || "por definir"
+  }\n\nSi tienes algun dato *por definir*, por favor, actualizalo presionando el boton *No, actualizar*, de lo contrario no se podra continuar con la compra`;
 };
 
 export const ToGetDni = async (nroTel) => {
@@ -48,15 +63,20 @@ export const ToGetDni = async (nroTel) => {
       "Para poder continuar, necesitamos algunos datos adicionales. Estos datos son necesarios para asegurarnos de brindarte el mejor servicio posible y cumplir con nuestras políticas de seguridad y privacidad. Una vez que hayas ingresado estos datos, estaremos listos para continuar. ¡Gracias!"
     )
   );
-  await sendWhatsappMsg(sendText(nroTel, "Por favor, proporciona tu número de DNI, ejemplo: 12345678"));
+  await sendWhatsappMsg(
+    sendText(nroTel, "Por favor, proporciona tu número de DNI, ejemplo: 12345678")
+  );
+  return "Por favor, proporciona tu número de DNI, ejemplo: 12345678";
 };
 
 export const FinishFlow = async (nroTel) => {
   await sendWhatsappMsg(sendText(nroTel, "Gracias por tu tiempo, ¡esperamos verte pronto!"));
+  return "Gracias por tu tiempo, ¡esperamos verte pronto!";
 };
 
 export const ValidateMessage = async (nroTel, message) => {
   await sendWhatsappMsg(
     sendText(nroTel, `Respuesta incorrecta, por favor ingresa una respuesta válida (*${message}*)`)
   );
+  return `Respuesta incorrecta, por favor ingresa una respuesta válida (*${message}*)`;
 };
