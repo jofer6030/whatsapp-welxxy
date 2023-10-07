@@ -1,0 +1,1 @@
+{"nroCell":"51961324952","conversations":[{"state":"WELCOME_USER","message":"hola"},{"state":"START","message":"hola"}]}

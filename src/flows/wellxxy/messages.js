@@ -1,5 +1,5 @@
-import { sendWhatsappMsg } from "../../utils/sendWhatsappMsg.util";
-import { sendButtonDocument, sendButtonImage, sendButtonText, sendText } from "../../shared/msgWhatssapModels.shared";
+import { sendWhatsappMsg } from "../../utils/sendWhatsappMsg.util.js";
+import { sendButtonDocument, sendButtonImage, sendButtonText, sendText } from "../../shared/msgWhatssapModels.shared.js";
 
 export const Welcome = async (nroTel, name) => {
   await sendWhatsappMsg(

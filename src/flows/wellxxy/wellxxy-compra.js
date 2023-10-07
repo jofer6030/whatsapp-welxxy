@@ -6,6 +6,8 @@ import {
   sendText,
 } from "../../shared/msgWhatssapModels.shared.js";
 
+import { getStateFlow, memoryConversation } from "../../utils/memoryConversation.js";
+
 import { sendWhatsappMsg } from "../../utils/sendWhatsappMsg.util.js";
 import { sanitizeText } from "../../utils/sanitizeText.util.js";
 import { isDateValid, isFormatDateValid } from "../../utils/isDateValid.util.js";

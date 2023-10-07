@@ -24,6 +24,6 @@ export const getStateFlow = (nroCell, message) => {
     return WELCOME_USER;
   }
   const parseInfoUser = JSON.parse(fs.readFileSync(pathFile, "utf-8"));
-  const state = parseInfoUser.conversations[parseInfoUser.conversation.length - 1].state;
+  const state = parseInfoUser.conversations[parseInfoUser.conversations.length - 1].state;
   return state;
 };
