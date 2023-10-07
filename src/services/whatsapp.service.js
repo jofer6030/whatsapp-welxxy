@@ -1,10 +1,10 @@
 import { sendWhatsappMsg } from "../utils/sendWhatsappMsg.util.js";
 
 import { sendText } from "../shared/msgWhatssapModels.shared.js";
-import { wellxxyCompra } from "../flows/wellxxy-compra.js";
+import { wellxxyCompra } from "../flows/wellxxy/wellxxy-compra.js";
 
 class WhatsAppService {
-  constructor() { }
+  constructor() {}
 
   async verifyToken(req, res) {
     const accessToken = "WsV3rify";
@@ -24,13 +24,13 @@ class WhatsAppService {
     const value = changes["value"];
     const messageObject = value["messages"];
     const contact = value["contacts"];
-    
+
     if (typeof messageObject !== "undefined") {
       const messages = messageObject[0];
       const name = contact[0].profile.name;
       const userPhoneNumber = messages["from"];
       const infoText = this.#getInfoTextUser(messages);
-      
+
       await wellxxyCompra(infoText, userPhoneNumber, name);
     }
 
