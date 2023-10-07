@@ -1,8 +1,9 @@
 import { Router } from "express";
 
 import WhatsAppController from "../controllers/whatsapp.controller.js";
+import WhatsAppService from '../services/whatsapp.service.js'
 
-const whatsAppController = new WhatsAppController();
+const whatsAppController = new WhatsAppController(new WhatsAppService());
 
 const router = Router();
 
