@@ -5,10 +5,16 @@ import { WELCOME_USER } from "./enumFlow.util.js";
 const directorio = path.resolve("memory");
 
 export const memoryConversation = (nroCell, data) => {
+  console.log("entro", data)
   const pathFile = path.join(directorio, `conversation_${nroCell}.txt`);
   const file = fs.readFileSync(pathFile, "utf-8");
-  const parseFile = JSON.parse(file);
-  const infoToMemory = { ...parseFile, conversations: [...parseFile.conversations, data] };
+  let infoToMemory;
+  if (!file) {
+    infoToMemory = { nroCell, conversations: [data] }
+  } else {
+    const parseFile = JSON.parse(file);
+    infoToMemory = { ...parseFile, conversations: [...parseFile.conversations, data] };
+  }
   fs.writeFileSync(pathFile, JSON.stringify(infoToMemory));
 };
 

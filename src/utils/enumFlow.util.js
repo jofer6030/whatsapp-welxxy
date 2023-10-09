@@ -8,3 +8,4 @@ export const GET_EMAIL = "GET_EMAIL";
 export const SURE_TO_BUY = "SURE_TO_BUY";
 export const FIX_INFO = "FIX_INFO";
 export const GET_ADDRESS = "GET_ADDRESS";
+export const ORDER_DONE = "ORDER_DONE";

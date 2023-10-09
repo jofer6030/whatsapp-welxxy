@@ -20,12 +20,12 @@ export function isDateValid(date) {
       maxDayFrebruary = 28;
     }
     if (day > maxDayFrebruary) {
-      throw new Error("El día no es válido para el mes y año ingresado");
+      return false
     }
   } else if (month30Dias.includes(month)) {
-    if (day > 30) throw new Error("El día maximo es 30 para el mes ingresado");
+    if (day > 30) return false
   } else {
-    if (day > 31) throw new Error("El día maximo es 31 para el mes ingresado");
+    if (day > 31) return false
   }
 
   return true;
