@@ -5,6 +5,7 @@ import {
   sendButtonText,
   sendText,
 } from "../../shared/msgWhatssapModels.shared.js";
+import { formatDateFromIso } from "../../utils/formatDateIso.js";
 
 export const Welcome = async (nroCell, name) => {
   await sendWhatsappMsg(
@@ -35,11 +36,15 @@ export const TermsConditions = async (nroCell) => {
 export const VerifyInfoUser = async (nroCell, user) => {
   await sendWhatsappMsg(
     sendButtonText(nroCell, {
-      bodyText: `*¿Tus datos son correctos?*\n\n*N°Tel:* ${user.nro_celular || "por definir"}\n*Dni:* ${
-        user.dni || "por definir"
-      }\n*Fecha de Nacimiento:* ${user.fecha_nacimiento || "por definir"}\n*Correo:* ${
-        user.correo || "por definir"
-      }\n\nSi tienes algun dato *por definir*, por favor, actualizalo presionando el boton *No, actualizar*, de lo contrario no se podra continuar con la compra`,
+      bodyText: `
+*¿Tus datos son correctos?*
+
+*N°Tel:* ${user.nro_celular || "por definir"}
+*Dni:* ${user.dni || "por definir"}
+*Fecha de Nacimiento:* ${formatDateFromIso(user.fecha_nacimiento) || "por definir"}
+*Correo:* ${user.correo || "por definir"}
+
+Si tienes algun dato *por definir*, por favor, actualizalo presionando el boton *No, actualizar*, de lo contrario no se podra continuar con la compra`,
       listBtns: [
         { id: "info-correct-si", text: "Si, correctos" },
         { id: "info-correct-no", text: "No, actualizar" },
@@ -48,7 +53,7 @@ export const VerifyInfoUser = async (nroCell, user) => {
   );
   return `*¿Tus datos son correctos?*\n\n*N°Tel:* ${user.nro_celular || "por definir"}\n*Dni:* ${
     user.dni || "por definir"
-  }\n*Fecha de Nacimiento:* ${user.fecha_nacimiento || "por definir"}\n*Correo:* ${
+  }\n*Fecha de Nacimiento:* ${formatDateFromIso(user.fecha_nacimiento) || "por definir"}\n*Correo:* ${
     user.correo || "por definir"
   }\n\nSi tienes algun dato *por definir*, por favor, actualizalo presionando el boton *No, actualizar*, de lo contrario no se podra continuar con la compra`;
 };
@@ -78,6 +83,63 @@ export const ToGetEmail = async (nroCell) => {
     sendText(nroCell, "Ahora, proporciona tu correo con el siguiente formato: ejemplo@dominio.com")
   );
   return "Ahora, proporciona tu correo con el siguiente formato: ejemplo@dominio.com";
+};
+
+export const ToGetAddress = async (nroCell) => {
+  await sendWhatsappMsg(
+    sendText(
+      nroCell,
+      "¡Perfecto! Por favor, proporciona la dirección de entrega, ejemplo: Av. Javier Prado 1234, San Isidro"
+    )
+  );
+  return "¡Perfecto! Por favor, proporciona la dirección de entrega, ejemplo: Av. Javier Prado 1234, San Isidro";
+};
+
+export const ToCompleteInfo = async (nroCell) => {
+  await sendWhatsappMsg(sendText(nroCell, "Tienes datos por definir"));
+  return "Tienes datos por definir";
+};
+
+export const ToFixInfo = async (nroCell) => {
+  await sendWhatsappMsg(
+    sendButtonText(nroCell, {
+      bodyText: "¿Qué dato deseas actualizar?",
+      listBtns: [
+        { id: "nro-dni", text: "Dni" },
+        { id: "fecha-nacimiento", text: "Fecha de Nacimiento" },
+        { id: "correo", text: "Correo" },
+      ],
+    })
+  );
+  return "¿Qué dato deseas actualizar?";
+};
+
+export const ToSureBuy = async (nroCell) => {
+  await sendWhatsappMsg(
+    sendButtonText(nroCell, {
+      bodyText: `Bien!!🙌, ahora puedes comprar nuestro producto\n¿Deseas comprar?`,
+      listBtns: [
+        { id: "comprar-si", text: "Si, comprar!" },
+        { id: "comprar-no", text: "No, gracias" },
+      ],
+    })
+  );
+  return "Bien!!🙌, ahora puedes comprar nuestro producto\n¿Deseas comprar?";
+};
+
+export const ToOrderDone = async (nroCell) => {
+  await sendWhatsappMsg(
+    sendText(
+      nroCell,
+      "Orden realizada!, ahora te enviaremos un link de pago para que puedas realizar la compra. Una vez que hayas realizado el pago, te enviaremos un mensaje de confirmación con la fecha de entrega. ¡Gracias!"
+    )
+  );
+  return "Orden realizada!, ahora te enviaremos un link de pago para que puedas realizar la compra. Una vez que hayas realizado el pago, te enviaremos un mensaje de confirmación con la fecha de entrega.¡Gracias!";
+};
+
+export const VerifyOrder = async (nroCell) => {
+  await sendWhatsappMsg(sendText(nroCell, "Aun tienes una orden pendiente"));
+  return "Aun tienes una orden pendiente";
 };
 
 export const FinishFlow = async (nroCell) => {
