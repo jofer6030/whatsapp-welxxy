@@ -6,7 +6,7 @@ import { wellxxyCompra } from "../flows/wellxxy/wellxxy-compra.js";
 class WhatsAppService {
   constructor() {}
 
-  async verifyToken(req, res) {
+  verifyToken = async (req, res) => {
     const accessToken = "WsV3rify";
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
@@ -16,15 +16,14 @@ class WhatsAppService {
     } else {
       res.sendStatus(400);
     }
-  }
+  };
 
-  async recievedMessage(req, res) {
+  recievedMessage = async (req, res) => {
     const entry = req.body["entry"][0];
     const changes = entry["changes"][0];
     const value = changes["value"];
     const messageObject = value["messages"];
     const contact = value["contacts"];
-
     if (typeof messageObject !== "undefined") {
       const messages = messageObject[0];
       const name = contact[0].profile.name;
@@ -35,7 +34,7 @@ class WhatsAppService {
     }
 
     res.send("RecievedMessage");
-  }
+  };
 
   #getInfoTextUser(messages) {
     const infoText = { text: "" };

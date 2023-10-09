@@ -3,8 +3,8 @@ import WhatsAppService from '../services/whatsapp.service.js'
 class WhatsAppController {
   #whatsAppService;
 
-  constructor() {
-    this.#whatsAppService = new WhatsAppService()
+  constructor(whatsAppService) {
+    this.#whatsAppService = whatsAppService
   }
 
   verifyToken = async(req, res, next) => {
