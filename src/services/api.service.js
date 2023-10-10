@@ -2,7 +2,8 @@ import axios from 'axios'
 
 class ApiService {
   #apiService
-  #url = "https://gi-a47t.onrender.com"
+  // #url = "https://gi-a47t.onrender.com"
+  #url = "https://qx4l1062-3000.brs.devtunnels.ms"
   #tokenApiPeru = "60b7488892af2dc1119acab61abdea74fa18a0a4f0a1b0c1d4d309d379369974"
   
   constructor() {

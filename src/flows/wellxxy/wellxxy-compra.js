@@ -152,7 +152,7 @@ export const wellxxyCompra = async (infoText, nroCell, name) => {
       }
       break;
     case flow.GET_ADDRESS:
-      await apiService.createOrden({ nro_celular: nroCell, direccion_envio: textLower });
+      await apiService.createOrden({ nro_celular: nroCell, direccion_envio: keyWord });
       msg = await message.ToOrderDone(nroCell);
       memoryConversation(nroCell, { state: flow.ORDER_DONE, messageCompany: msg });
       break;
