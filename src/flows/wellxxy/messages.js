@@ -96,8 +96,8 @@ export const ToGetAddress = async (nroCell) => {
 };
 
 export const ToCompleteInfo = async (nroCell) => {
-  await sendWhatsappMsg(sendText(nroCell, "Tienes datos por definir"));
-  return "Tienes datos por definir";
+  await sendWhatsappMsg(sendText(nroCell, "Tienes datos por definir!!!"));
+  return "Tienes datos por definir!!!";
 };
 
 export const ToUpdateInfo = async (nroCell, option) => {
