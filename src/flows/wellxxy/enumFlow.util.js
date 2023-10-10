@@ -6,6 +6,7 @@ export const GET_DNI = "GET_DNI";
 export const GET_DATE_BIRTH = "GET_DATE_BIRTH";
 export const GET_EMAIL = "GET_EMAIL";
 export const SURE_TO_BUY = "SURE_TO_BUY";
+export const OPTION_TO_FIX_INFO = "OPTION_TO_FIX_INFO";
 export const FIX_INFO = "FIX_INFO";
 export const GET_ADDRESS = "GET_ADDRESS";
 export const ORDER_DONE = "ORDER_DONE";

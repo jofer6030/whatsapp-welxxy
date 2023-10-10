@@ -100,14 +100,19 @@ export const ToCompleteInfo = async (nroCell) => {
   return "Tienes datos por definir";
 };
 
+export const ToUpdateInfo = async (nroCell, option) => {
+  await sendWhatsappMsg(sendText(nroCell, `Proporcione su ${option}`));
+  return `Proporcione su nuevo ${option}`;
+};
+
 export const ToFixInfo = async (nroCell) => {
   await sendWhatsappMsg(
     sendButtonText(nroCell, {
       bodyText: "¿Qué dato deseas actualizar?",
       listBtns: [
-        { id: "nro-dni", text: "Dni" },
-        { id: "fecha-nacimiento", text: "Fecha de Nacimiento" },
-        { id: "correo", text: "Correo" },
+        { id: "nro-dni", text: "DNI" },
+        { id: "fecha-nacimiento", text: "FECHA DE NACIMIENTO" },
+        { id: "correo", text: "CORREO" },
       ],
     })
   );

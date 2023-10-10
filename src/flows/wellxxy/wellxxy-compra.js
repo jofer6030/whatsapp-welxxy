@@ -4,16 +4,16 @@ import { sanitizeText } from "../../utils/sanitizeText.util.js";
 import { isDateValid, isFormatDateValid } from "../../utils/isDateValid.util.js";
 import { isEmailValid } from "../../utils/isEmailValid.util.js";
 
-import * as flow from "../../utils/enumFlow.util.js";
+import * as flow from "./enumFlow.util.js";
 import * as message from "./messages.js";
-import { getStateFlow, memoryConversation } from "../../utils/memoryConversation.js";
+import { getStateFlow, memoryConversation } from "./memoryConversation.js";
 import { isDniValid } from "../../utils/isDniValid.util.js";
 
 const apiService = new ApiService();
 
 export const wellxxyCompra = async (infoText, nroCell, name) => {
   const keyWord = sanitizeText(infoText.text);
-  const stateFlow = getStateFlow(nroCell, keyWord);
+  const stateFlow = getStateFlow(nroCell);
 
   memoryConversation(nroCell, { state: stateFlow, messageUser: keyWord });
 
@@ -103,7 +103,7 @@ export const wellxxyCompra = async (infoText, nroCell, name) => {
         }
       } else if (["no", "actualizar", "no, actualizar"].includes(keyWord)) {
         msg = await message.ToFixInfo(nroCell);
-        memoryConversation(nroCell, { state: flow.FIX_INFO, messageCompany: msg });
+        memoryConversation(nroCell, { state: flow.OPTION_TO_FIX_INFO, messageCompany: msg });
       } else {
         msg = await message.ValidateMessage(nroCell, "Responder solo: *Si* o *No*");
         memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
@@ -121,28 +121,33 @@ export const wellxxyCompra = async (infoText, nroCell, name) => {
         memoryConversation(nroCell, { state: flow.SURE_TO_BUY, messageCompany: msg });
       }
       break;
-    case flow.FIX_INFO:
-      if (keyWord === "dni" && isDniValid(keyWord)) {
-        const userUpdated = await apiService.updateUser({ number: nroCell, dni: keyWord });
-        msg = await message.VerifyInfoUser(nroCell, userUpdated.user);
-        memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
-      } else if (
-        ["fecha", "fecha de nacimiento"].includes(keyWord) &&
-        isDateValid(keyWord) &&
-        isFormatDateValid(keyWord)
-      ) {
-        const userUpdated = await apiService.updateUser({ number: nroCell, fecha_nacimiento: keyWord });
-        msg = await message.VerifyInfoUser(nroCell, userUpdated.user);
-        memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
-      } else if (keyWord === "correo" && isEmailValid(keyWord)) {
-        const userUpdated = await apiService.updateUser({ number: nroCell, correo: keyWord });
-        msg = await message.VerifyInfoUser(nroCell, userUpdated.user);
-        memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
+    case flow.OPTION_TO_FIX_INFO:
+      if (["dni", "fecha de nacimiento", "correo"].includes(keyWord)) {
+        msg = await message.ToUpdateInfo(nroCell, keyWord);
+        memoryConversation(nroCell, { state: flow.FIX_INFO, messageCompany: msg });
       } else {
         msg = await message.ValidateMessage(
           nroCell,
-          "Por favor proporcione una opción valida: *DNI*, *Fecha de nacimiento* o *Correo*"
+          "Por favor proporcione una opción valida: *DNI*, *FECHA DE NACIMIENTO* o *CORREO*"
         );
+        memoryConversation(nroCell, { state: flow.OPTION_TO_FIX_INFO, messageCompany: msg });
+      }
+      break;
+    case flow.FIX_INFO:
+      if (isDateValid(keyWord) && isFormatDateValid(keyWord)) {
+        const userUpdated = await apiService.updateUser({ number: nroCell, fecha_nacimiento: keyWord });
+        msg = await message.VerifyInfoUser(nroCell, userUpdated.user);
+        memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
+      } else if (isEmailValid(keyWord)) {
+        const userUpdated = await apiService.updateUser({ number: nroCell, correo: keyWord });
+        msg = await message.VerifyInfoUser(nroCell, userUpdated.user);
+        memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
+      } else if (isDniValid(keyWord)) {
+        const userUpdated = await apiService.updateUser({ number: nroCell, dni: keyWord });
+        msg = await message.VerifyInfoUser(nroCell, userUpdated.user);
+        memoryConversation(nroCell, { state: flow.VERIFY_USER, messageCompany: msg });
+      } else {
+        msg = await message.ValidateMessage(nroCell, "Por favor proporcione un dato válido");
         memoryConversation(nroCell, { state: flow.FIX_INFO, messageCompany: msg });
       }
       break;
