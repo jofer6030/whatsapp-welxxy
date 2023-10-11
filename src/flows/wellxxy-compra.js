@@ -10,8 +10,8 @@ export const wellxxyCompra = async (infoText, userPhoneNumber, name) => {
 
   const responseChatGpT = await questionToChatGpt(keyWord, userPhoneNumber);
 
-  memoryConversation(nroCell, { role: "user", content: keyWord });
-  memoryConversation(nroCell, { role: "assistant", content: responseChatGpT });
+  memoryConversation(userPhoneNumber, { role: "user", content: keyWord });
+  memoryConversation(userPhoneNumber, { role: "assistant", content: responseChatGpT });
 
   await sendWhatsappMsg(sendText(userPhoneNumber, responseChatGpT));
   return;

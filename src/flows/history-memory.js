@@ -7,6 +7,10 @@ export const memoryConversation = (nroCell, data) => {
   const pathFile = path.join(directorio, `conversation_${nroCell}.txt`);
 
   const file = fs.readFileSync(pathFile, "utf-8");
+  if (!file) {
+    fs.writeFileSync(pathFile, JSON.stringify([data]));
+    return;
+  };
   const parseFile = JSON.parse(file);
   const infoToMemory = [...parseFile, data];
   fs.writeFileSync(pathFile, JSON.stringify(infoToMemory));

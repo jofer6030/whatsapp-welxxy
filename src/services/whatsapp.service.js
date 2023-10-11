@@ -7,7 +7,7 @@ class WhatsAppService {
   constructor() { }
 
   async verifyToken(req, res) {
-    const accessToken = "WsV3rify";
+    const accessToken = "testT0ken";
     const token = req.query["hub.verify_token"];
     const challenge = req.query["hub.challenge"];
 
@@ -24,17 +24,16 @@ class WhatsAppService {
     const value = changes["value"];
     const messageObject = value["messages"];
     const contact = value["contacts"];
-    
+
     if (typeof messageObject !== "undefined") {
       const messages = messageObject[0];
       const name = contact[0].profile.name;
       const userPhoneNumber = messages["from"];
       const infoText = this.#getInfoTextUser(messages);
-      
       await wellxxyCompra(infoText, userPhoneNumber, name);
     }
 
-    res.send("RecievedMessage");
+    res.sendStatus(200);
   }
 
   #getInfoTextUser(messages) {

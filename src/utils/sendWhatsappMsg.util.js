@@ -7,9 +7,9 @@ export async function sendWhatsappMsg(data) {
     headers: {
       "Content-Type": "application/json",
       Authorization:
-        "Bearer EAAyOqhJSG2sBO8X3DFsIy6cZBYCCxKRFWFECnqFF4ra1YOn315QWI5JP1Vk3QQgvya3R1Vd6tLhnxgPESNy1ZCn7hqVodQXvxMcyptiztDts22rXZBM76gnnKLmAnJLwa1WZAvuZAtld6pZBqwZAXZAntT9qOBhq4N0sWQNm7yHgLspuFQRv50EkPbAr3O7v59D4",
+        "Bearer EAAOpUJi1i6ABO6LFLWdDjSEl5X1ZA3lJOGZBXdXoRLZC4uIsZB1SBQZCcXZAsiyXhOL22edZAkx4KZAXc2iGWDFh9NfN59tUKbs7wPXeP2dQWFR1CPRonaoGDUrtlLfGq6EZC1oWBAzvinH31aDDDYN33vZAjEZA3jeTLVHcDZCpR9ZCJlcNHuBTTjS6BN9etqZBYZAUmyZADaUQeCMALtKBCe0G",
     },
   };
-  
+
   await axios.post(url, data, options);
 }
