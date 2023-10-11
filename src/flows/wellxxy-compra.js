@@ -1,13 +1,18 @@
-import ApiService from "../services/api.service.js";
-
 import { sendWhatsappMsg } from "../utils/sendWhatsappMsg.util.js";
-import { sendButtonText, sendButtonDocument, sendButtonImage, sendText } from "../shared/msgWhatssapModels.shared.js";
+import { sendText } from "../shared/msgWhatssapModels.shared.js";
 
 import { sanitizeText } from "../utils/sanitizeText.util.js";
 import { questionToChatGpt } from "./chat-gpt.js";
+import { memoryConversation } from "./history-memory.js";
 
 export const wellxxyCompra = async (infoText, userPhoneNumber, name) => {
   const keyWord = sanitizeText(infoText.text);
-  const responseChatGpT = await questionToChatGpt(keyWord, name);
+
+  const responseChatGpT = await questionToChatGpt(keyWord);
+
+  memoryConversation(nroCell, { role: "user", content: keyWord });
+  memoryConversation(nroCell, { role: "assistant", content: responseChatGpT });
+
   await sendWhatsappMsg(sendText(userPhoneNumber, responseChatGpT));
+  return;
 };
