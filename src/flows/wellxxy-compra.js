@@ -8,7 +8,6 @@ import { questionToChatGpt } from "./chat-gpt.js";
 
 export const wellxxyCompra = async (infoText, userPhoneNumber, name) => {
   const keyWord = sanitizeText(infoText.text);
-
-  const responseChatGpT = await questionToChatGpt(keyWord);
-  await sendWhatsappMsg(userPhoneNumber, sendText(responseChatGpT, name));
+  const responseChatGpT = await questionToChatGpt(keyWord, name);
+  await sendWhatsappMsg(sendText(userPhoneNumber, responseChatGpT));
 };
