@@ -8,7 +8,7 @@ import { memoryConversation } from "./history-memory.js";
 export const wellxxyCompra = async (infoText, userPhoneNumber, name) => {
   const keyWord = sanitizeText(infoText.text);
 
-  const responseChatGpT = await questionToChatGpt(keyWord);
+  const responseChatGpT = await questionToChatGpt(keyWord, userPhoneNumber);
 
   memoryConversation(nroCell, { role: "user", content: keyWord });
   memoryConversation(nroCell, { role: "assistant", content: responseChatGpT });

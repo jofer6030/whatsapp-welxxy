@@ -2,9 +2,9 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 
 import { index } from "./pinecone.js";
-import { memoryConversationAll } from "./history-memory.js";
+import { getMemoryConversationAll } from "./history-memory.js";
 
-export const questionToChatGpt = async (question) => {
+export const questionToChatGpt = async (question, nroCell) => {
   const queryEmbedding = await new OpenAIEmbeddings({
     openAIApiKey: process.env["OPENAI_API_KEY"],
   }).embedQuery(question);
@@ -37,8 +37,8 @@ export const questionToChatGpt = async (question) => {
     const ND = "Lo siento, pero no lo sé";
 
     const historyConversation =
-      memoryConversationAll().length > 0
-        ? [...memoryConversationAll(), { role: "user", content: question }]
+      getMemoryConversationAll(nroCell).length > 0
+        ? [...getMemoryConversationAll(nroCell), { role: "user", content: question }]
         : [{ role: "user", content: question }];
 
     const result = await new ChatOpenAI().completionWithRetry({
