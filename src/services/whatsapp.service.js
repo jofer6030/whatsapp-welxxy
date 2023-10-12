@@ -30,10 +30,12 @@ class WhatsAppService {
       const name = contact[0].profile.name;
       const userPhoneNumber = messages["from"];
       const infoText = this.#getInfoTextUser(messages);
+      res.sendStatus(200)
       await wellxxyCompra(infoText, userPhoneNumber, name);
+    } else {
+      res.sendStatus(200);
     }
 
-    res.sendStatus(200);
   }
 
   #getInfoTextUser(messages) {
