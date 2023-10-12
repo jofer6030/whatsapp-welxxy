@@ -1,6 +1,6 @@
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { encodeChat } from "gpt-tokenizer";
+import { encode } from "gpt-3-encoder";
 
 import { index } from "./pinecone.js";
 import { getMemoryConversationAll } from "./history-memory.js";
@@ -19,8 +19,7 @@ export const questionToChatGpt = async (question, nroCell) => {
     },
   });
 
-  if (queryResponse.matches.length ) {
-
+  if (queryResponse.matches.length) {
     const CONTENT_INFO = queryResponse.matches.map((match) => match.metadata.pageContent).join(" ");
 
     const ND = "Lo siento, pero no lo sé";
@@ -29,6 +28,8 @@ export const questionToChatGpt = async (question, nroCell) => {
       getMemoryConversationAll(nroCell).length > 0
         ? [...getMemoryConversationAll(nroCell), { role: "user", content: question }]
         : [{ role: "user", content: question }];
+
+    const chatToText = historyConversation.map((message) => message.content).join("\n");
 
     const messages = [
       {
@@ -40,10 +41,8 @@ export const questionToChatGpt = async (question, nroCell) => {
 - Como FAQ debes dar repuestas cortas y precisas y dar la respuesta en en lenguaje sencillo y cercano. Cuando no sepas la respuesta o tengas dudas contesta con la siguiente frase '${ND}'`,
       },
       ...historyConversation,
-    ]
+    ];
 
-    const chatTokens = encodeChat(messages, "g");
-    console.log(chatTokens.length);
     try {
       const result = await new ChatOpenAI().completionWithRetry({
         model: "gpt-3.5-turbo",
@@ -54,7 +53,7 @@ export const questionToChatGpt = async (question, nroCell) => {
       });
       return result.choices[0].message.content;
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   } else {
     console.log("No se encontro respuesta");
