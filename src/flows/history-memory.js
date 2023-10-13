@@ -10,7 +10,8 @@ export const memoryConversation = (nroCell, data) => {
   if (!file) {
     fs.writeFileSync(pathFile, JSON.stringify([data]));
     return;
-  };
+  }
+
   const parseFile = JSON.parse(file);
   const infoToMemory = [...parseFile, data];
   fs.writeFileSync(pathFile, JSON.stringify(infoToMemory));
