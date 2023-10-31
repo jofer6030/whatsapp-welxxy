@@ -24,13 +24,15 @@ class WhatsAppService {
     const value = changes["value"];
     const messageObject = value["messages"];
     const contact = value["contacts"];
+    console.log(JSON.stringify(entry, null, '\t'));
 
     if (typeof messageObject !== "undefined") {
       const messages = messageObject[0];
       const name = contact[0].profile.name;
       const userPhoneNumber = messages["from"];
       const infoText = this.#getInfoTextUser(messages);
-      wellxxyCompra(infoText, userPhoneNumber, name);
+      // console.log(JSON.stringify(entry, null, '\t'));
+      // wellxxyCompra(infoText, userPhoneNumber, name);
     }
     res.sendStatus(200);
   }

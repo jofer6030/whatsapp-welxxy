@@ -18,4 +18,4 @@ const pinecone = new Pinecone({
 /**
 Export the pinecone index function, named it based on your created index in pinecone. We will need this for Pinecone langchain wrapper.
 **/
-export const index = pinecone.Index("panaderia-test");
+export const index = pinecone.Index("panaderia-memo");
